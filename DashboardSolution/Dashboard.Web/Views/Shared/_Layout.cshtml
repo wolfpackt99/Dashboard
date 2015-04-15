@@ -5,13 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/bootstrap","~/content/bootstrap-theme")
-    <link href="~/Content/bootstrap" rel="stylesheet" type="text/css" />
-    
+    @Styles.Render("~/Content/bootstrap", "~/content/bootstrap-theme", "~/content/override.css")
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -26,13 +25,16 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="container-fluid">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - TFS Dashboard</p>
-        </footer>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">&copy; @DateTime.Now.Year - TFS Dashboard</p>
+        </div>
+
+    </footer>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     @Scripts.Render("~/bundles/bootstrap")

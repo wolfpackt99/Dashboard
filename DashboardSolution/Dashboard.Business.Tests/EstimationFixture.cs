@@ -19,7 +19,7 @@ namespace Dashboard.Business.Tests
 
             var result = await x.GetAllWorkRemaining("");
 
-            result.Should().ContainKey(ActivityType.Development);
+            result.Should().ContainKey("Development");
             System.Diagnostics.Debug.WriteLine(string.Format("Original: {0}", result));
         }
     }

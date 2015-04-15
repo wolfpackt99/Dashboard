@@ -10,8 +10,7 @@ namespace Dashboard.Web.Models
 {
     public class EstimationModel
     {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ActivityType ActivityType { get; set; }
+        public string ActivityType { get; set; }
         public decimal Hours { get; set; }
     }
 }

@@ -15,7 +15,17 @@ namespace Dashboard.Business
 {
     public class Estimation
     {
-        private async Task<WorkRemaining> GetWorkRemaining(string path, ActivityType activity, HourRemainingType type = HourRemainingType.OriginalValue)
+        public async Task<Dictionary<string, decimal>> GetAllWorkRemaining(string path, HourRemainingType type = HourRemainingType.OriginalValue)
+        {
+            var list = FieldValues.GetActivityItems().Select(activity => GetWorkRemaining(path, activity, type)).ToList();
+
+            var decimals = await Task.WhenAll(list);
+
+            return decimals.ToDictionary(s => s.ActivityType, r => r.Hours);
+        }
+
+
+        private async Task<WorkRemaining> GetWorkRemaining(string path, string activity, HourRemainingType type = HourRemainingType.OriginalValue)
         {
             const string query = "Select [Remaining Work] from WorkItems where [Work Item Type] = @Type " + 
                                  " and [Team Project] = @Project and [Iteration Path] = @IterationPath" + 
@@ -25,10 +35,11 @@ namespace Dashboard.Business
                 {"Type", "Task"},
                 {"Project", Config.Project },
                 {"IterationPath", string.Format("{0}\\{1}", Config.Project, path) },
-                {"ActivityName", activity.GetDisplayAttrString() }
+                {"ActivityName", activity }
             };
 
             var wis = new TfsConnection().GetService<WorkItemStore>();
+
 
             var result = wis.Query(query, dict);
             var list = result.Cast<WorkItem>();
@@ -51,14 +62,7 @@ namespace Dashboard.Business
             };
         }
 
-        public async Task<Dictionary<ActivityType, decimal>> GetAllWorkRemaining(string path, HourRemainingType type = HourRemainingType.OriginalValue)
-        {
-            var list = Enum.GetValues(typeof (ActivityType)).Cast<ActivityType>().Select(activity => GetWorkRemaining(path, activity, type)).ToList();
-
-            var decimals = await Task.WhenAll(list);
-
-            return decimals.ToDictionary(s => s.ActivityType, r => r.Hours);
-        }
+        
 
         
     }

@@ -10,7 +10,7 @@
     function homeController($scope, estimationService) {
         $scope.title = 'Remaining Work';
         $scope.stuff = estimationService.getData().get(
-            { path: 'r17\\s2' }
+            { path: '' }
         );
 
         $scope.$watchCollection('stuff', function (newval, oldval, $scope) {
